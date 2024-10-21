@@ -19,6 +19,10 @@ class BaseManager {
     async createOne(payload) {
         return await this.collection.insertOne(payload);
     }
+
+	async updateOne(filter, update) {
+		return await this.collection.updateOne(filter, update);
+	}
 }
 
 module.exports = BaseManager;

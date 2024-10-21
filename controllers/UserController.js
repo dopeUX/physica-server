@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const UserManager = require('../managers/UserManager.js');
 
 class UserController {
@@ -21,7 +22,7 @@ class UserController {
         let id = req.params.id;
 	    try {
 		const userManager = new UserManager(req.db);
-		response = await userManager.getOne({_id:id});
+		response = await userManager.getOne({_id:ObjectId.createFromHexString((String(id)))});
         console.log("response was sent as a JSON")
 		return res.status(200).send({data: response})
 	   } catch(err) {
@@ -36,7 +37,7 @@ class UserController {
 		const userManager = new UserManager(req.db);
         const payload = req.body;
 		response = await userManager.createOne(payload);
-        const insertedDoc = await collection.findOne({ _id: response.insertedId });
+        const insertedDoc = await userManager.getOne({_id:response.insertedId});
         console.log("response was sent as a JSON")
 		return res.status(200).send({data: insertedDoc})
 	   } catch(err) {
